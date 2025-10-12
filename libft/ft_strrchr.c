@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:37 by amwahab          ###   ########.fr       */
+/*   Created: 2025/04/30 08:32:14 by amwahab           #+#    #+#             */
+/*   Updated: 2025/05/01 12:52:51 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	char	*line;
+	size_t	i;
 
-	while(1)
+	i = 0;
+	while (s[i])
+		i++;
+	if ((char)c == '\0')
+		return ((char *)&s[i]);
+	while (i > 0)
 	{
-		line = readline("minicheh>");
-		free(line);
+		i--;
+		if (s[i] == (char)c)
+		{
+			return ((char *)&s[i]);
+		}
 	}
+	return (NULL);
 }

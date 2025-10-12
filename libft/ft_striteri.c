@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:37 by amwahab          ###   ########.fr       */
+/*   Created: 2025/04/28 11:11:01 by amwahab           #+#    #+#             */
+/*   Updated: 2025/05/14 23:40:32 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	char	*line;
+	unsigned int	i;
 
-	while(1)
+	i = 0;
+	while (s[i])
 	{
-		line = readline("minicheh>");
-		free(line);
+		f(i, &s[i]);
+		i++;
 	}
 }
+
+/*void	shift(unsigned int i, char *c)
+{
+	if (i % 2 == 0)
+		*c = *c + 1;
+}*/

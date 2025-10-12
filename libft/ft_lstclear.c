@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:37 by amwahab          ###   ########.fr       */
+/*   Created: 2025/04/29 15:54:56 by amwahab           #+#    #+#             */
+/*   Updated: 2025/05/01 11:42:01 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	char	*line;
+	t_list	*temp;
 
-	while(1)
+	temp = *lst;
+	while (*lst)
 	{
-		line = readline("minicheh>");
-		free(line);
+		temp = (*lst)->next;
+		del((*lst)->content);
+		free(*lst);
+		*lst = temp;
 	}
+	*lst = NULL;
 }

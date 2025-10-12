@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:37 by amwahab          ###   ########.fr       */
+/*   Created: 2025/04/28 11:09:40 by amwahab           #+#    #+#             */
+/*   Updated: 2025/05/01 11:46:37 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char	*line;
+	unsigned int	i;
+	char			*tab;
+	int				size;
 
-	while(1)
+	size = ft_strlen(s);
+	tab = (char *)malloc(sizeof(char) * (size + 1));
+	if (!tab)
+		return (NULL);
+	i = 0;
+	while (s[i])
 	{
-		line = readline("minicheh>");
-		free(line);
+		tab[i] = f(i, s[i]);
+		i++;
 	}
+	tab[i] = '\0';
+	return (tab);
 }

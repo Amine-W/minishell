@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen_tab.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:37 by amwahab          ###   ########.fr       */
+/*   Created: 2025/06/28 15:28:44 by amwahab           #+#    #+#             */
+/*   Updated: 2025/09/22 12:06:15 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+int	ft_strlen_tab(char **tab)
 {
-	char	*line;
+	int	count;
 
-	while(1)
-	{
-		line = readline("minicheh>");
-		free(line);
-	}
+	count = 0;
+	if (!tab)
+		return (0);
+	while (tab[count])
+		count++;
+	return (count);
 }

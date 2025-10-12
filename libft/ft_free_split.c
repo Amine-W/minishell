@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_free_split.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 12:42:37 by amwahab          ###   ########.fr       */
+/*   Created: 2025/08/30 18:29:04 by amwahab           #+#    #+#             */
+/*   Updated: 2025/08/30 18:41:50 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int main(void)
+void	ft_free_split(char **tab)
 {
-	char	*line;
+	int	i;
 
-	while(1)
+	i = 0;
+	while (tab[i])
 	{
-		line = readline("minicheh>");
-		free(line);
+		free(tab[i]);
+		i++;
 	}
+	free(tab);
 }
