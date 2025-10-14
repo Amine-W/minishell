@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/12 15:35:41 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/14 18:43:10 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	main(void)
 		if (line == NULL)
 		{
 			printf("exit\n");
-			rl_clear_history();
+			clear_history();
 			break ;
 		}
 		else if (line[0] == '\0')

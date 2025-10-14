@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+         #
+#    By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/04/27 15:55:25 by amwahab           #+#    #+#              #
-#    Updated: 2025/10/01 12:24:57 by amwahab          ###   ########.fr        #
+#    Updated: 2025/10/13 13:14:18 by amwahab          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,9 @@ SRCS	=	ft_isalpha.c \
 		ft_strlen_tab.c \
 		ft_free_split.c \
 		ft_atol.c \
-		ft_atod.c 
+		ft_atod.c \
+		ft_isspace.c \
+		ft_isdelimiter.c
 
 SRCS_BONUS	=	ft_lstnew.c \
 		ft_lstadd_front.c \
