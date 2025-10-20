@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:16:02 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/14 16:04:40 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/15 10:26:41 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,24 +21,24 @@ void	skip_spaces(char *line, int *i)
 t_token_type	get_operator_type(char *str)
 {
 	if (str[0] == '>' && str[1] == '>')
-		return (REDIR_APPEND);
+		return (TOKEN_REDIR_APPEND);
 	if (str[0] == '<' && str[1] == '<')
-		return (REDIR_HEREDOC);
+		return (TOKEN_REDIR_HEREDOC);
 	if (str[0] == '|' && str[1] == '|')
 		return (TOKEN_OR);
 	if (str[0] == '&' && str[1] == '&')
 		return (TOKEN_AND);
 	if (str[0] == '|')
-		return (PIPE);
+		return (TOKEN_PIPE);
 	if (str[0] == '<')
-		return (REDIR_IN);
+		return (TOKEN_REDIR_IN);
 	if (str[0] == '>')
-		return (REDIR_OUT);
+		return (TOKEN_REDIR_OUT);
 	if (str[0] == '(')
 		return (TOKEN_LPAREN);
 	if (str[0] == ')')
 		return (TOKEN_RPAREN);
-	return (WORD);
+	return (TOKEN_WORD);
 }
 
 t_quote_type	get_quote_type(char *line, int *i, char *quote_char)

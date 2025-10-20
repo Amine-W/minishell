@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 18:27:46 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/14 19:31:15 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/15 10:26:50 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,18 @@ void print_tokens(t_token *tokens)
 	while (current)
 	{
 		printf("Token %d: ", i);
-		if (current->type == WORD)
-			printf("[WORD]");
-		else if (current->type == PIPE)
-			printf("[PIPE]");
-		else if (current->type == REDIR_IN)
-			printf("[REDIR_IN]");
-		else if (current->type == REDIR_OUT)
-			printf("[REDIR_OUT]");
-		else if (current->type == REDIR_APPEND)
-			printf("[REDIR_APPEND]");
-		else if (current->type == REDIR_HEREDOC)
-			printf("[REDIR_HEREDOC]");
+		if (current->type == TOKEN_WORD)
+			printf("[TOKEN_WORD]");
+		else if (current->type == TOKEN_PIPE)
+			printf("[TOKEN_PIPE]");
+		else if (current->type == TOKEN_REDIR_IN)
+			printf("[TOKEN_REDIR_IN]");
+		else if (current->type == TOKEN_REDIR_OUT)
+			printf("[TOKEN_REDIR_OUT]");
+		else if (current->type == TOKEN_REDIR_APPEND)
+			printf("[TOKEN_REDIR_APPEND]");
+		else if (current->type == TOKEN_REDIR_HEREDOC)
+			printf("[TOKEN_REDIR_HEREDOC]");
 		else if (current->type == TOKEN_OR)
 			printf("[TOKEN_OR]");
 		else if (current->type == TOKEN_AND)

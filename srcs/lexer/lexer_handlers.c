@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/14 14:51:41 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/14 19:28:52 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/15 10:26:39 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	handle_operator(char *line, int *i, t_token **tokens)
 	int				len;
 
 	type = get_operator_type(&line[*i]);
-	if (type == REDIR_APPEND || type == REDIR_HEREDOC
+	if (type == TOKEN_REDIR_APPEND || type == TOKEN_REDIR_HEREDOC
 		|| type == TOKEN_OR || type == TOKEN_AND)
 		len = 2;
 	else
@@ -42,7 +42,7 @@ int	handle_word(char *line, int *i, t_token **tokens)
 	while (!ft_isspace(line[j]) && !ft_isdelimiter(line[j]) && line[j] != '"' && line[j] != '\'' && line[j] != '\0')
 		j++;
 	len = j - *i;
-	token = create_token(WORD, NO_QUOTE, &line[*i], len);
+	token = create_token(TOKEN_WORD, NO_QUOTE, &line[*i], len);
 	if (!token)
 		return (-1);
 	token_add_back(tokens, token);
@@ -66,7 +66,7 @@ int	handle_quotes(char *line, int *i, t_token **tokens)
 	if(line[*i] == '\0')
 		return (-1);
 	len = *i - j + 1;
-	token = create_token(WORD, quote_type, &line[j], len);
+	token = create_token(TOKEN_WORD, quote_type, &line[j], len);
 	if(!token)
 		return (-1);
 	token_add_back(tokens, token);
