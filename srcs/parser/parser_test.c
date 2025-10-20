@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 11:14:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/20 15:15:59 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/20 16:58:07 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ int main(void)
 	int		length;
 
 	printf("\n========== TEST 1 : cat file.txt ==========\n");
-	input = "(cat file.txt)";
+	input = "(cat file.txt $HOME)";
 	tokens = lexer(input);
 	length = ft_tokens_size(tokens);
 	ast = parse(tokens, length);
 	print_ast(ast, 0);
+	free_tokens(tokens);
 	free_ast(ast);
 
 	printf("\n========== TEST 2 : (cat < input.txt | grep test > output.txt) && echo success || (ls -la  ==========\n");
@@ -33,6 +34,7 @@ int main(void)
 	length = ft_tokens_size(tokens);
 	ast = parse(tokens, length);
 	print_ast(ast, 0);
+	free_tokens(tokens);
 	free_ast(ast);
 
 	printf("\n========== TEST 3 : cat < in.txt > out.txt ==========\n");
@@ -41,6 +43,7 @@ int main(void)
 	length = ft_tokens_size(tokens);
 	ast = parse(tokens, length);
 	print_ast(ast, 0);
+	free_tokens(tokens);
 	free_ast(ast);
 
 	return (0);
