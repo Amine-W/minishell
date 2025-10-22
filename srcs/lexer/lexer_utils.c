@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 14:16:02 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/15 10:26:41 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/22 10:52:52 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ t_token_type	get_operator_type(char *str)
 		return (TOKEN_LPAREN);
 	if (str[0] == ')')
 		return (TOKEN_RPAREN);
-	return (TOKEN_WORD);
+	return (TOKEN_ERROR);
 }
 
 t_quote_type	get_quote_type(char *line, int *i, char *quote_char)
 {
-	t_quote_type quote_type;
-	
+	t_quote_type	quote_type;
+
 	if (line[*i] == '"')
 	{
 		*quote_char = '"';
@@ -55,5 +55,5 @@ t_quote_type	get_quote_type(char *line, int *i, char *quote_char)
 		*quote_char = '\'';
 		quote_type = SINGLE_QUOTE;
 	}
-	return(quote_type);
+	return (quote_type);
 }

@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:50:03 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/20 15:48:44 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:34:34 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef enum e_token_type {
 	TOKEN_AND,				//7 - &&
 	TOKEN_LPAREN,			//8 - (
 	TOKEN_RPAREN,			//9 - )
+	TOKEN_ERROR,			//10 ERROR
 }	t_token_type;
 
 
@@ -151,11 +152,11 @@ void	free_redirections(t_redir *redirections);
 t_node	*parse(t_token *tokens, int length);
 
 // PARSE COMMAND
-t_command		*parse_command(t_token *tokens);
+t_command		*parse_command(t_token *tokens, int length);
 
 // PARSE COMMAND UTILS
-char			**create_argv(t_token *tokens, int count);
-t_redir			*parse_redirections(t_token *tokens);
+char			**create_argv(t_token *tokens, int count, int length);
+t_redir			*parse_redirections(t_token *tokens, int length);
 void			redir_add_back(t_redir **lst, t_redir *new);
 
 
@@ -164,10 +165,16 @@ void			redir_add_back(t_redir **lst, t_redir *new);
 t_operator_info	find_operator(t_token *tokens, int length, t_operator_prio prio);
 int				has_wrapping_parentheses(t_token *tokens, int length);
 int				is_target_operator(t_token_type type, t_operator_prio prio);
+t_node			*handle_operator_parser(t_token *tokens, int length, 
+					t_operator_info operator_info);
+t_node			*create_command_node(t_token *tokens, int length);
+void			print_syntax_error(char *token);
+
+
 
 // TOKENS
 int				ft_tokens_size(t_token *lst);
-int				count_tokens_word(t_token *token);
+int				count_tokens_word(t_token *token, int length);
 t_redir_type	token_to_redir_type(t_token_type type);
 t_token			*advance_token(t_token *token, int position);
 

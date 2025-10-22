@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:49:44 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/14 18:43:10 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/22 10:51:01 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ int	main(void)
 			continue ;
 		}
 		add_history(line);
-
-		//traiter la commande pour plus tard//
 		printf("vous avez tapé: %s\n", line);
-		//traiter la commande pour plus tard//
 		free(line);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/17 16:12:01 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/20 15:38:06 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/22 11:30:07 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ t_operator_info	find_operator(t_token *tokens, int length, t_operator_prio prio)
 	last_op_position = -1;
 	last_op_type = 0;
 	count = 0;
-	i = 0;
+	i = -1;
 	current = tokens;
-	while (current && i < length)
+	while (current && ++i < length)
 	{
 		if (current->type == TOKEN_LPAREN)
 			count++;
@@ -37,7 +37,6 @@ t_operator_info	find_operator(t_token *tokens, int length, t_operator_prio prio)
 			last_op_type = current->type;
 		}
 		current = current->next;
-		i++;
 	}
 	return ((t_operator_info){last_op_position, last_op_type});
 }
@@ -78,4 +77,42 @@ int	is_target_operator(t_token_type type, t_operator_prio prio)
 	else if (prio == MEDIUM_PRIO)
 		return (type == TOKEN_PIPE);
 	return (0);
+}
+
+void	print_syntax_error(char *token)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
+	ft_putstr_fd(token, 2);
+	ft_putstr_fd("'\n", 2);
+}
+
+t_node	*handle_operator_parser(t_token *tokens, int length,
+							t_operator_info operator_info)
+{
+	t_node	*node;
+
+	if (operator_info.position == 0)
+		return (print_syntax_error(tokens[0].str), NULL);
+	if (operator_info.type == TOKEN_AND)
+		node = create_node(NODE_AND, NULL);
+	else if (operator_info.type == TOKEN_OR)
+		node = create_node(NODE_OR, NULL);
+	else
+		node = create_node(NODE_PIPE, NULL);
+	node->left = parse(tokens, operator_info.position);
+	node->right = parse(advance_token(tokens, operator_info.position + 1),
+			length - operator_info.position - 1);
+	if (node->left == NULL || node->right == NULL)
+		return (free_ast(node), NULL);
+	return (node);
+}
+
+t_node	*create_command_node(t_token *tokens, int length)
+{
+	t_command	*command;
+
+	command = parse_command(tokens, length);
+	if (!command)
+		return (NULL);
+	return (create_node(NODE_COMMAND, command));
 }

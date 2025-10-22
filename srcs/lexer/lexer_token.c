@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 13:14:49 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/20 17:08:53 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/22 10:51:55 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,17 +48,17 @@ void	token_add_back(t_token **lst, t_token *new)
 void	free_tokens(t_token *tokens)
 {
 	t_token	*current;
-	t_token *temp;
-	
-	if(!tokens)
+	t_token	*temp;
+
+	if (!tokens)
 		return ;
-	current  = tokens;
+	current = tokens;
 	while (current)
 	{
 		temp = current->next;
 		free(current->str);
 		free(current);
-		current = temp; 
+		current = temp;
 	}
 	return ;
 }
@@ -67,12 +67,12 @@ t_token	*advance_token(t_token *token, int position)
 {
 	t_token	*current;
 	int		i;
-	
+
 	current = token;
 	i = 0;
-	while(i < position)
+	while (i < position)
 	{
-		if(current == NULL)
+		if (current == NULL)
 			return (NULL);
 		current = current->next;
 		i++;
