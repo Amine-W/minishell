@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:50:03 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/22 11:34:34 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/23 18:03:06 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ typedef struct s_redir {
 /*================================== COMMANDES ====================================*/
 
 typedef struct s_command {
-	char			**argv; // Tableau : ["cmd", "arg1", ..., NULL]
-	t_redir			*redirections; // {REDIR_TYPE, "file", next}
+	char			**argv;			// Tableau : ["cmd", "arg1", ..., NULL]
+	t_redir			*redirections;	// {REDIR_TYPE, "file", next}
 } t_command;
 
 /*==================================== AST NODE ======================================*/
@@ -177,6 +177,17 @@ int				ft_tokens_size(t_token *lst);
 int				count_tokens_word(t_token *token, int length);
 t_redir_type	token_to_redir_type(t_token_type type);
 t_token			*advance_token(t_token *token, int position);
+
+
+/*========================================= EXEC ===============================================*/
+
+int	exec_ast(t_node *node);
+int	exec_pipeline(t_node *node);
+
+// PATH
+char	*get_path(char *cmd, char **envp);
+char	*find_path_in_env(char **envp);
+char	*try_path(char **paths, char *cmd);
 
 
 #endif
