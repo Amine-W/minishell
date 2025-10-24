@@ -5,64 +5,30 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/23 17:35:38 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/23 18:02:09 by amwahab          ###   ########.fr       */
+/*   Created: 2025/10/23 18:11:15 by amwahab           #+#    #+#             */
+/*   Updated: 2025/10/23 18:26:07 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_path(char *cmd, char **envp)
+void print_command_error(char *cmd, int error_type)
 {
-	char	*path;
-	char	**paths;
-	
-	if (ft_strchr(cmd, '/'))
-	{
-		if (access(cmd, X_OK) != -1)
-			return (cmd);
-		return (NULL);
-	}
-	path = find_path_in_env(envp);
-	if (!path)
-		return (NULL);
-	paths = ft_split(path, ':');
-	if(!paths)
-		return (NULL);
-	path = try_path(paths, cmd);
-	return (ft_free_split(paths), path);
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(cmd, 2);
+	ft_putstr_fd(": ", 2);
+
+	if (error_type == 127)
+		ft_putstr_fd("command not found\n", 2);
+	else if (error_type == 126)
+		ft_putstr_fd("Permission denied\n", 2);
 }
 
-char	*find_path_in_env(char **envp)
+int get_exit_code(int status)
 {
-	int		i;
-
-	i = 0;
-	while(envp[i])
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return (envp[i] + 5);
-		i++;
-	}
-	return (NULL);
-}
-
-char	*try_path(char **paths, char *cmd)
-{
-	int		i;
-	char	*full_path;
-	char	*tmp;
-	
-	i = 0;
-	while (paths[i])
-	{
-		tmp = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(tmp, cmd);
-		free(tmp);
-		if (access(full_path, X_OK) == 0)
-			return (full_path);
-		free(full_path);
-		i++;
-	}
-	return (NULL);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status));
+	return (-1);
 }

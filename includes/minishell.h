@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:50:03 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/23 18:03:06 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/23 18:14:14 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,11 +183,15 @@ t_token			*advance_token(t_token *token, int position);
 
 int	exec_ast(t_node *node);
 int	exec_pipeline(t_node *node);
+int	exec_command(t_command *cmd, char **envp);
+
 
 // PATH
 char	*get_path(char *cmd, char **envp);
 char	*find_path_in_env(char **envp);
 char	*try_path(char **paths, char *cmd);
 
+// UTILS
+void	print_command_error(char *cmd, int error_type);
 
 #endif
