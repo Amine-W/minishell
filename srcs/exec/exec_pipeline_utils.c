@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pipeline.c                                    :+:      :+:    :+:   */
+/*   exec_pipeline_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/23 16:57:07 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/24 18:31:01 by amwahab          ###   ########.fr       */
+/*   Created: 2025/10/24 18:20:25 by amwahab           #+#    #+#             */
+/*   Updated: 2025/10/24 18:29:36 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_pipeline(t_node *node, char **envp)
+t_pipeline	*extract_cmd(t_node *node)
 {
-	t_pipeline	*pipeline;
-	// 1. extract cmd from node if node->left-type == CMD
-	pipeline = extract_cmd(node);
-	// 2. 
+	// 1.
 }

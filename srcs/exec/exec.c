@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
+/*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 15:50:17 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/23 18:27:06 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/24 17:56:29 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,17 @@
 
 int	exec_ast(t_node *node, char **envp)
 {
+	int	status;
+	
 	if (node == NULL)
 		return (-1);
 	if (node->type == NODE_COMMAND)
-		return (exec_command(node->command, envp));
+		status = exec_command(node->command, envp);
 	else if (node->type == NODE_AND)
-	{
-		
-	}
+		status = exec_and(node, envp);
 	else if (node->type == NODE_OR)
-	{
-		
-	}
+		status = exec_or(node, envp);
 	else if (node->type == NODE_PIPE)
-	{
-		
-	}
+		status = exec_pipeline(node, envp);
+	return (status);
 }

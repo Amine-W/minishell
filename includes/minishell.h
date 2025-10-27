@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
+/*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:50:03 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/23 18:14:14 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/10/24 18:17:43 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,15 @@ typedef enum e_operator_prio {
 typedef struct s_operator_info {
 	int				position;	// Position de l'opérateur trouvé dans la liste
 	t_token_type	type;		// TOKEN_OR, TOKEN_AND, ...
-	
 }	t_operator_info;
+
+/*====================================== PIPELINE ===========================================*/
+
+// Extract from *cmd from NODE_PIPE sera stocke dans cette liste chainee
+typedef struct s_pipeline{
+	t_command			*command;
+	struct s_pipeline	*next;
+}	t_pipeline;
 
 /*==================================================================================*/
 /*============================= FONCTIONS ==========================================*/
@@ -178,13 +185,13 @@ int				count_tokens_word(t_token *token, int length);
 t_redir_type	token_to_redir_type(t_token_type type);
 t_token			*advance_token(t_token *token, int position);
 
-
 /*========================================= EXEC ===============================================*/
 
-int	exec_ast(t_node *node);
-int	exec_pipeline(t_node *node);
+int	exec_ast(t_node *node, char **envp);
+int	exec_pipeline(t_node *node, char **envp);
 int	exec_command(t_command *cmd, char **envp);
-
+int	exec_or(t_node *node, char **envp);
+int	exec_and(t_node *node, char **envp);
 
 // PATH
 char	*get_path(char *cmd, char **envp);
@@ -193,5 +200,6 @@ char	*try_path(char **paths, char *cmd);
 
 // UTILS
 void	print_command_error(char *cmd, int error_type);
+int		get_exit_code(int status);
 
 #endif

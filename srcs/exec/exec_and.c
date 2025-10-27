@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_pipeline.c                                    :+:      :+:    :+:   */
+/*   exec_and.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/23 16:57:07 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/24 18:31:01 by amwahab          ###   ########.fr       */
+/*   Created: 2025/10/24 15:07:59 by amwahab           #+#    #+#             */
+/*   Updated: 2025/10/24 17:49:12 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_pipeline(t_node *node, char **envp)
+int	exec_and(t_node *node, char **envp)
 {
-	t_pipeline	*pipeline;
-	// 1. extract cmd from node if node->left-type == CMD
-	pipeline = extract_cmd(node);
-	// 2. 
+	int	status;
+
+	if (node->left->type == NODE_COMMAND)
+		status = exec_command(node->left->command, envp);
+	else if (node->left->type != NODE_COMMAND)
+		status = exec_ast(node->left, envp);
+	if (status == 0)
+	{
+		if (node->right->type == NODE_COMMAND && status == 0)
+			status = exec_command(node->right->command, envp);
+		else
+			status = exec_ast(node->right, envp);
+	}
+	return(status);
 }
