@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 14:54:14 by amwahab           #+#    #+#             */
-/*   Updated: 2025/11/05 14:01:09 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/11/19 10:43:20 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	process_heredoc(t_token *tokens)
 			delimiter = current->next->str;
 			while (1)
 			{
-				line = readline("heredoc> ");
+				line = readline("> ");
 				if (!line)
 					return(free(buffer), -1);
 				if (ft_strcmp(line, delimiter) == 0)
