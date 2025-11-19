@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amwahab <amwahab@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/02 17:50:03 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/24 18:17:43 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/11/19 09:00:15 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,16 @@
 # include <stdio.h>
 # include <libft.h>
 # include <stdlib.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/wait.h>
+
+/*=============================== CODE ERREUR =====================================*/
+
+#define REDIR_ERROR ((t_redir *)-1)
 
 
 /* ================================= QUOTES ====================================*/
@@ -46,10 +54,11 @@ typedef enum e_token_type {
 
 
 typedef struct s_token {
-	t_token_type	type;	// Type du token
-	t_quote_type	quote;	// Mode Quote
-	char			*str;	// Contenu (malloc)
-	struct s_token	*next;	// Liste chaînée
+	t_token_type	type;				// Type du token
+	t_quote_type	quote;				// Mode Quote
+	char			*str;				// Contenu (malloc)
+	char			*heredoc_content;	// Contenu du HEREDOC
+	struct s_token	*next;				// Liste chaînée
 }	t_token;
 
 /*================================= REDIR ========================================*/
@@ -63,9 +72,10 @@ typedef enum e_redir_type {
 }	t_redir_type;
 
 typedef struct s_redir {
-	t_redir_type	type;	// Type de redirections
-	char			*file;	// Nom du fichier cible
-	struct s_redir	*next; // Liste chaînée
+	t_redir_type	type;				// Type de redirections
+	char			*file;				// Nom du fichier cible
+	char			*heredoc_content;	// HEREDOC BUFFER
+	struct s_redir	*next;				// Liste chaînée
 }	t_redir;
 
 /*================================== COMMANDES ====================================*/
@@ -112,6 +122,13 @@ typedef struct s_pipeline{
 	struct s_pipeline	*next;
 }	t_pipeline;
 
+/*==================================== CLEAN UP ==============================================*/
+
+typedef struct s_cleanup {
+	char	*line;		// Ligne de readline à libérer
+	t_token	*tokens;	// Liste de tokens à libérer
+	t_node	*ast;		// Arbre syntaxique à libérer
+}	t_cleanup;
 /*==================================================================================*/
 /*============================= FONCTIONS ==========================================*/
 /*==================================================================================*/
@@ -142,6 +159,26 @@ t_quote_type	get_quote_type(char *line, int *i, char *quote_char);
 //QUOTES
 t_quote_type	get_quote_type(char *line, int *i, char *quote_char);
 
+/*===================================== HEREDOC ======================================*/
+
+int		process_heredoc(t_token *tokens);
+
+/*===================================== EXPANDER ========================================*/
+
+// EXPAND
+void	expander(t_token *tokens, char **envp);
+char	*expand(char *str, char **envp);
+
+// UTILS
+int	get_var_len(char *str, int *i, char **envp);
+int	expanded_len(char *str, char **envp);
+
+int	copy_var_value(char *str, int *i, char *result, int k, char **envp);
+char	*copy_expanded_str(char *str, char *result, char **envp);
+
+char *ft_getenv(char *name, char **envp);
+
+int	is_valid_var_char(char c);
 
 /*======================================= AST =============================================*/
 
@@ -165,8 +202,8 @@ t_command		*parse_command(t_token *tokens, int length);
 char			**create_argv(t_token *tokens, int count, int length);
 t_redir			*parse_redirections(t_token *tokens, int length);
 void			redir_add_back(t_redir **lst, t_redir *new);
-
-
+void			print_unexpected_token(void);
+int				print_parser_redir_error(t_token *token);
 
 // UTILS
 t_operator_info	find_operator(t_token *tokens, int length, t_operator_prio prio);
@@ -187,16 +224,25 @@ t_token			*advance_token(t_token *token, int position);
 
 /*========================================= EXEC ===============================================*/
 
-int	exec_ast(t_node *node, char **envp);
-int	exec_pipeline(t_node *node, char **envp);
-int	exec_command(t_command *cmd, char **envp);
-int	exec_or(t_node *node, char **envp);
-int	exec_and(t_node *node, char **envp);
+// MAIN EXECS
+int	exec_ast(t_node *node, char **envp, t_cleanup *cleanup);
+int	exec_pipeline(t_node *node, char **envp, t_cleanup *cleanup);
+int	exec_command(t_command *cmd, char **envp, t_cleanup *cleanup);
+int	exec_or(t_node *node, char **envp, t_cleanup *cleanup);
+int	exec_and(t_node *node, char **envp, t_cleanup *cleanup);
 
 // PATH
 char	*get_path(char *cmd, char **envp);
 char	*find_path_in_env(char **envp);
 char	*try_path(char **paths, char *cmd);
+
+// REDIR
+void	apply_redirections(t_redir *redir);
+void	print_redir_error(char *file);
+void	apply_in(t_redir *redir);
+void	apply_out(t_redir *redir);
+void	apply_append(t_redir *redir);
+void	apply_heredoc(t_redir *redir);
 
 // UTILS
 void	print_command_error(char *cmd, int error_type);

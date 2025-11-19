@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 08:54:10 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/22 11:34:54 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/11/19 08:47:03 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ t_command	*parse_command(t_token *tokens, int length)
 	if (!argv)
 		return (NULL);
 	head_redir = parse_redirections(tokens, length);
+	if (head_redir == REDIR_ERROR)
+		return (ft_free_split(argv), NULL);
 	command = malloc(sizeof(t_command));
 	if (!command)
 		return (free_redirections(head_redir), ft_free_split(argv), NULL);

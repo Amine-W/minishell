@@ -6,7 +6,7 @@
 /*   By: amwahab <amwahab@42.student.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 09:08:43 by amwahab           #+#    #+#             */
-/*   Updated: 2025/10/22 11:41:02 by amwahab          ###   ########.fr       */
+/*   Updated: 2025/11/19 08:46:19 by amwahab          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ char	**create_argv(t_token *tokens, int count, int length)
 			return (argv[i] = NULL, ft_putstr_fd
 				("minishell: syntax error near unexpected token `('\n", 2),
 				ft_free_split(argv), NULL);
+		if (current->type == TOKEN_REDIR_APPEND || current->type == TOKEN_REDIR_HEREDOC || current->type == TOKEN_REDIR_IN || current->type == TOKEN_REDIR_OUT)
+		{
+			current = current->next;
+			if (current)
+				current = current->next;
+			continue ;
+		}
 		if (current->type == TOKEN_WORD)
 		{
 			argv[i++] = ft_strdup(current->str);
@@ -88,15 +95,24 @@ t_redir	*parse_redirections(t_token *tokens, int length)
 	while (current && length--)
 	{
 		if (current->type == TOKEN_REDIR_IN || current->type == TOKEN_REDIR_OUT
-			|| current->type == TOKEN_REDIR_HEREDOC || current->type
-			== TOKEN_REDIR_APPEND)
+			|| current->type == TOKEN_REDIR_HEREDOC|| current->type == TOKEN_REDIR_APPEND)
 		{
 			redir = malloc(sizeof(t_redir));
 			if (!redir)
 				return (NULL);
 			redir->type = token_to_redir_type(current->type);
-			redir->file = ft_strdup(current->next->str);
+			if (current->next && current->next->type == TOKEN_WORD) 					 // cas où il y a un fichier après l'opérateur "ls > infile.txt"
+				redir->file = ft_strdup(current->next->str);
+			else if (current->next)														 // cas où ce n'est pas un fichier après "ls > >"
+			{
+				print_parser_redir_error(current->next);
+				return (free(redir), free_redirections(head_redir), REDIR_ERROR);
+			}
+			else																		 // cas où il n'y a pas de token après l'opérateur "ls >"
+				return (free(redir), free_redirections(head_redir), print_unexpected_token(), REDIR_ERROR);
 			redir->next = NULL;
+			if (current->type == TOKEN_REDIR_HEREDOC)
+				redir->heredoc_content = ft_strdup(current->heredoc_content);
 			redir_add_back(&head_redir, redir);
 			current = current->next;
 		}
@@ -117,8 +133,26 @@ void	free_redirections(t_redir *redirections)
 	{
 		temp = current->next;
 		free(current->file);
+		free(current->heredoc_content);
 		free(current);
 		current = temp;
 	}
 	return ;
+}
+
+int	print_parser_redir_error(t_token *token)
+{
+	if (token->type != TOKEN_WORD)
+	{
+		ft_putstr_fd("minishell :syntax error near unexpected token `", 2);
+		ft_putstr_fd(token->str, 2);
+		ft_putstr_fd("'\n", 2);
+		return (-1);
+	}
+	return (0);
+}
+
+void	print_unexpected_token(void)
+{
+	ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
 }
